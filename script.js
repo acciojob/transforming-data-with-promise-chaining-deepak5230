@@ -1,17 +1,69 @@
-const express = require('express');
-const path = require('path');
 
-const app = express();
+const button = document.querySelector("#btn");
+const input = document.querySelector("#ip");
+const output = document.querySelector("#output");
 
-app.use(express.static(__dirname))
-
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname + '/main.html'));
+button.addEventListener("click", function () {
+    //console.log('clicked');
+    const num = Number(input.value);
+    //console.log(num);
+    processNumber(num);
 });
-//your code here
-app.post('/add', (req, res) => {
-  const {a,b} = req.body;
-  res.status(200).send(a+b);
-  // res.sendFile(path.join(__dirname + '/main.html'));
-});
-module.exports = app;
+
+//updateOutput(3);
+function updateOutput(number) {
+    output.textContent = `Result: ${number}`;
+}
+
+//const num = 2;
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+function processNumber(num) {
+    return delay(2000)
+        .then(() => {
+            updateOutput(num);
+            return num;
+        })
+        .then((num) =>
+            delay(2000).then(() => {
+                updateOutput(num);
+                return num;
+            })
+        )
+        .then((num) =>
+            delay(1000).then(() => {
+                num *= 2;
+                updateOutput(num);
+                return num;
+            })
+        )
+        .then((num) =>
+            delay(1000).then(() => {
+                num -= 3;
+                updateOutput(num);
+                return num;
+            })
+        )
+        .then((num) =>
+            delay(1000).then(() => {
+                num /= 2;
+                updateOutput(num);
+                return num;
+            })
+        )
+        .then((num) =>
+            delay(1000).then(() => {
+                console.log(num)
+                num += 10;
+                updateOutput(num);
+                return num;
+            })
+        )
+        .then((num) => {
+            output.textContent = `Final Result: ${num}`;
+        })
+        .catch(() => {
+            output.textContent = `Error`;
+        });
+}
+transforming-
